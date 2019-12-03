@@ -1,0 +1,23 @@
+@import './lib/base-colors';
+@import './lib/variables';
+@import './lib/mixins-media';
+@import './lib/mixins';
+@import './lib/placeholders';
+
+@import './global/reset';
+@import './global/general';
+@import './global/class';
+
+@import './components/Carousel.scss';
+@import './components/CarouselItem.scss';
+
+@import './Layout/Header.scss';
+@import './Layout/Branch.scss';
+@import './Layout/Search.scss';
+@import './Layout/Categories.scss';
+@import './Layout/Footer.scss';
+
+@import './pages/login';
+@import './pages/register';
+@import './pages/notFound';
+@import './pages/player';

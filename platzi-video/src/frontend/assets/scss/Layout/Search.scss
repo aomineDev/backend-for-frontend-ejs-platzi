@@ -1,0 +1,39 @@
+// Search
+
+.Search {
+	width: 70%;
+	@include desktop($bp-xs-3) {
+		width: 90%;
+	}
+	@extend %marngin-center;
+	&__wrapper {
+		height: 200px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	&__title {
+		text-align: center;
+		font-size: 25px;
+	}
+	&__input {
+		width: 100%;
+		padding: 16px;
+		margin-top: 24px;
+		border: 2px solid $light;
+		border-radius: 32px;
+		background-color: rgba(255, 255, 255, .1);
+		color: inherit;
+		font-size: 16px;
+		&::placeholder {
+			color: inherit;
+		}
+	}
+	&__query {
+		color: $light;
+		&-resalt {
+			font-weight: bold;
+		}
+	}
+}

@@ -1,0 +1,44 @@
+.Carousel__item {
+  position: relative;
+  display: inline-block;
+  width: 300px;
+  height: 450px;
+  margin-right: 12px;
+  border-radius: 40px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: .45s;
+  transform-origin: center left;
+  @include desktop($bp-sm) {
+    width: 250px;
+    height: 350px;
+    margin-right: 8px;
+  }
+  @include desktop($bp-xs-3) {
+    width: 200px;
+    height: 250px;
+    border-radius: 20px;
+  }
+  @extend %tap-highlight;
+  &:hover ~ & {
+    transform: translateX(100px);
+    @include range($bp-xs-3, $bp-sm) {
+      transform: translateX(70px);
+    }
+  }
+  &-img {
+    @extend %img-full;
+  }
+  &:first-child {
+    margin-left: 30px;
+    @include desktop($bp-xs-3) {
+      margin-left: 15px;
+    }
+  }
+  &:last-child {
+    margin-right: 110px;
+    @include range($bp-xs-3, $bp-sm) {
+      margin-right: 90px;
+    }
+  }
+}

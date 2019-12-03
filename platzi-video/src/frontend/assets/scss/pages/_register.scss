@@ -1,0 +1,33 @@
+// Register
+
+.Register {
+	@extend %form-box;
+	@extend %layout-center;
+	&__wrapper {
+		@extend %form-wrapper;
+	}
+	&__title {
+		@extend %form-title;
+	}
+	&__form {
+		@extend %form;
+	}
+	&__input {
+		@extend %form-input;
+	}
+	&__btn {
+		@extend %form-btn;
+	}
+	&__Login {
+		margin-top: 12px;
+		text-align: center;
+		font-size: 14px;
+		&-link {
+			font-size: 16px;
+			font-weight: bold;
+		}
+	}
+	& &__Login-link:hover {
+		text-decoration: underline;
+	}
+}

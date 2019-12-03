@@ -1,0 +1,56 @@
+// Login
+
+.Login {
+	@extend %form-box;
+	@extend %layout-center;
+	&__wrapper {
+		@extend %form-wrapper;
+	}
+	&__title {
+		@extend %form-title;
+	}
+	&__form {
+		@extend %form;
+	}
+	&__input {
+		@extend %form-input;
+	}
+	&__btn {
+		@extend %form-btn;
+	} 
+	&__actions {
+		display: flex;
+		justify-content: space-around;
+		font-size: 14px;
+		text-align: right;
+	}
+	&__socialLogin {
+		margin-top: 60px;
+		margin-bottom: 60px;
+		@include desktop($bp-xs-3) {
+			margin-top: 40px;
+			margin-bottom: 40px;
+		}
+		&-wrapper {
+			display: flex;
+			align-items: center;
+			margin-bottom: 10px;
+		}
+		&-icon {
+			width: 32px;
+			margin-right: 10px;
+		}
+	}
+	&__register {
+		font-size: 14px;
+		&-link {
+			font-size: 16px;
+			font-weight: bold;
+		}
+	}
+	& &__forgot-link:hover,
+	& &__socialLogin-link:hover,
+	& &__register-link:hover {
+		text-decoration: underline;
+	}
+}

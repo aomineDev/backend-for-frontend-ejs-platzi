@@ -1,0 +1,63 @@
+// Header
+
+.Header {
+	&__wrapper {
+		@extend %container-fluid;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 80px;
+	}
+}
+
+// Branch
+
+.Branch {
+	&__logo {
+		width: 200px;
+		@include desktop(400px) {
+			width: 140px;
+		}
+	}
+}
+
+// User 
+
+.User {
+	position: relative;
+	width: 100px;
+	&__profile {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		&-icon {
+			width: 50px;
+			border-radius: 50%;
+			@include desktop(400px) {
+				width: 40px;
+				margin-left: 12px;
+			}
+		}
+	}
+	&:hover &__actions {
+		display: block;
+	}
+	&__actions {
+		display: none;
+		position: absolute;
+		right: 0;
+		text-align: right;
+		&-item {
+			margin-top: 10px;
+		}
+		&-link {
+			cursor: pointer;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+	&__profile:hover &__actions {
+		display: block;
+	}
+}

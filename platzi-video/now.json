@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "name": "aomine-platzi-video",
+  "alias": ["aomine-platzi-video"],
+  "builds": [
+    {
+      "use": "@now/static-build",
+      "src": "package.json"
+    }
+  ],
+  "routes": [
+    { "src": "(.*).js", "dest": "/$1.js" },
+    { "src": "(.*).json", "dest": "/$1.json" },
+    { "src": "(.*).png", "dest": "/$1.png" },
+    { "src": "(.*).css", "dest": "/$1.css" },
+    { "src": "(.*).ico", "dest": "/$1.ico" },
+    { "src": "/.*", "dest": "/index.html" }
+  ]
+}

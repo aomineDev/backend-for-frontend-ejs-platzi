@@ -1,0 +1,26 @@
+// Not Found
+
+.notFound {
+	@extend %layout-center;
+	&__title {
+		text-align: center;
+		&-error {
+			display: inline-block;
+			font-size: 100px;
+			font-weight: bold;
+			animation: pulse 1s infinite;
+		}
+		&-message {
+			display: inline-block;
+			margin-top: 8px;
+			font-size: 32px;
+			letter-spacing: 2px;
+		}
+	}
+}
+
+@keyframes pulse {
+	50% {
+		transform: scale(1.5);
+	}
+}

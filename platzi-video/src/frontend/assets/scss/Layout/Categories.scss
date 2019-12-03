@@ -1,0 +1,15 @@
+// Main 
+
+.main {
+	@extend %container-fluid;
+	&__title {
+		margin-top: 20px;
+		font-size: 28px;
+		padding-left: 30px;
+		@include desktop($bp-xs-3) {
+			margin-top: 16px;
+			padding-left: 15px;
+			font-size: 20px;
+		}
+	}
+}

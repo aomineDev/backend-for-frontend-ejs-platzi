@@ -1,0 +1,8 @@
+// Branch
+
+@mixin branch {
+	display: block;
+	&__logo {
+		width: 200px;
+	}
+}
