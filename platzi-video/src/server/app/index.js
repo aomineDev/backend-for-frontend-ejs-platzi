@@ -7,11 +7,26 @@ import { renderRoutes } from 'react-router-config';
 import Routes from '../../frontend/routes/serverRoutes';
 import Layout from '../../frontend/Layout/Layout';
 import reducer from '../../frontend/reducers';
-import initialState from '../../frontend/initialState';
+// import initialState from '../../frontend/initialState';
 import render from '../render';
 
 const main = (req, res, next) => {
+  let initialState;
   try {
+    try {
+      const { id, email, name } = req.cookies;
+      initialState = {
+        user: { id, email, name },
+        playing: null,
+        content: [],
+        results: [],
+        myList: [],
+        trends: [],
+        originals: [],
+      };
+    } catch (error) {
+      console.log(error);
+    }
     const isLogged = (initialState.user.id);
     const store = createStore(reducer, initialState);
     const html = renderToString(

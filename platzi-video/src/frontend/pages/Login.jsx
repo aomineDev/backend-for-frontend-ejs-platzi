@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { loginRequest } from '../actions';
+import { loginUser } from '../actions';
 
 import google from '../assets/img/google-icon.png';
 import twitter from '../assets/img/twitter-icon.png';
 
-const Login = ({ loginRequest, history }) => {
+const Login = ({ loginUser, history }) => {
   const [form, setForm] = useState({
     email: '',
-    pass: '',
+    password: '',
   });
 
   const handleInput = (e) => {
@@ -22,7 +22,7 @@ const Login = ({ loginRequest, history }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    loginRequest(form, history);
+    loginUser(form, history);
   };
 
   return (
@@ -46,7 +46,7 @@ const Login = ({ loginRequest, history }) => {
             />
             <input
               type='password'
-              name='pass'
+              name='password'
               className='Login__input'
               placeholder='Password'
               aria-label='Password'
@@ -91,7 +91,7 @@ const Login = ({ loginRequest, history }) => {
 };
 
 const mapDispatchToProps = {
-  loginRequest,
+  loginUser,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

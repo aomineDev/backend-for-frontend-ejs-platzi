@@ -1,20 +1,25 @@
 /* eslint-disable global-require */
 import express from 'express';
+import path from 'path';
+import favicon from 'serve-favicon';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import webpack from 'webpack';
+import passport from 'passport';
 import boom from '@hapi/boom';
 import cookieParser from 'cookie-parser';
 import axios from 'axios';
-
 import main from './app';
 
 dotenv.config();
 
 const ENV = process.env.NODE_ENV;
 const PORT = process.env.PORT || 3001;
+const THIRTY_DAYS_IN_SEC = 2592000;
+const TWO_HOURS_IN_SEC = 7200;
 
 const app = express();
+
 app.use(express.static(`${__dirname}/public`));
 
 // body parser
@@ -39,10 +44,12 @@ if (ENV === 'development') {
   };
   app.use(webpackDevMiddleware(compiler, serverConfig));
   app.use(webpackHotMiddleware(compiler));
+  app.use(favicon(path.resolve(__dirname, 'favicon.ico')));
 } else {
   app.use(helmet());
   app.use(helmet.permittedCrossDomainPolicies());
   app.disable('x-powered-by');
+  app.use(favicon(path.resolve(__dirname, 'public/favicon.ico')));
 }
 
 // Basic strategy
@@ -61,8 +68,8 @@ app.post('/auth/sign-in', async (req, res, next) => {
         const { token, ...user } = data;
 
         res.cookie('token', token, {
-          httpOnly: !(DEV === 'development'),
-          secure: !(DEV === 'development'),
+          httpOnly: !(ENV === 'development'),
+          secure: !(ENV === 'development'),
           maxAge: rememberMe ? THIRTY_DAYS_IN_SEC : TWO_HOURS_IN_SEC,
         });
 

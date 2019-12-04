@@ -33,7 +33,7 @@ const Header = ({ user, history, logoutRequest }) => {
               <li className='User__actions-item'><Link to='/login' className='User__actions-link'>Iniciar Sesión</Link></li> :
               (
                 <>
-                  <li className='User__actions-item'><Link to='/' className='User__actions-link'>{user.username}</Link></li>
+                  <li className='User__actions-item'><Link to='/' className='User__actions-link'>{user.name}</Link></li>
                   <li className='User__actions-item'><span className='User__actions-link' role='button' tabIndex='0' onClick={handleSignout}>Cerrar Sesión</span></li>
                 </>
               )}
