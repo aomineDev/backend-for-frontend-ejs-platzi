@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Layout from './Layout/Layout';
 import Home from './pages/Home';
@@ -10,21 +11,21 @@ import NotFound from './pages/NotFound';
 
 import './assets/scss/styes.scss';
 
-const App = ({ isLogged }) => (
+const App = ({ user }) => (
   <BrowserRouter>
     <Layout>
       <Switch>
         <Route exact path='/'>
-          {isLogged ? <Home /> : <Redirect to='/login' />}
+          {user.id ? <Home /> : <Redirect to='/login' />}
         </Route>
         <Route exact path='/login'>
-          {!isLogged ? <Login /> : <Redirect to='/' />}
+          {!user.id ? <Login /> : <Redirect to='/' />}
         </Route>
         <Route exact path='/register'>
-          {!isLogged ? <Register /> : <Redirect to='/' />}
+          {!user.id ? <Register /> : <Redirect to='/' />}
         </Route>
         <Route exact path='/player/:id'>
-          {isLogged ? <Player /> : <Redirect to='/login' />}
+          {user.id ? <Player /> : <Redirect to='/login' />}
         </Route>
         <Route component={NotFound} />
       </Switch>
@@ -32,4 +33,8 @@ const App = ({ isLogged }) => (
   </BrowserRouter>
 );
 
-export default App;
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps, null)(App);

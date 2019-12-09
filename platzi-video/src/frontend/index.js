@@ -20,7 +20,7 @@ if (typeof window !== 'undefined') {
   hydrate(
     <Provider store={store}>
       <Router history={history}>
-        <App isLogged={(preloadedState.user.id)} />
+        <App />
       </Router>
     </Provider>
     , app,
