@@ -15,6 +15,12 @@ const main = (req, res, next) => {
   try {
     try {
       const { id, email, name } = req.cookies;
+      // let user = {
+      //   id: 0,
+      //   email: '',
+      //   name: '',
+      // };
+      // if (id && email && name) user = { id, email, name };
       initialState = {
         user: { id, email, name },
         playing: null,

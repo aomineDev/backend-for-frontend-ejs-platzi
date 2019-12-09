@@ -3,18 +3,17 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import gravatar from '../utils/gravatar';
-import { logoutRequest } from '../actions';
+import { logoutUser } from '../actions';
 
 import logo from '../assets/img/logo-platzi-video-BW2.png';
 import userIcon from '../assets/img/user-icon.png';
 
-const Header = ({ user, history, logoutRequest }) => {
+const Header = ({ user, history, logoutUser }) => {
 
   const userValidate = Object.keys(user).length > 0;
 
   const handleSignout = () => {
-    logoutRequest();
-    history.push('/login');
+    logoutUser(history);
   };
 
   return (
@@ -49,7 +48,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  logoutRequest,
+  logoutUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));

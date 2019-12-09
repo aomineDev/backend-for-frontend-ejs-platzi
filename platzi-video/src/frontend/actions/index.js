@@ -79,3 +79,13 @@ export const loginUser = ({ email, password }, redirect) => {
       .catch((err) => dispatch(setError(err)));
   };
 };
+
+export const logoutUser = (redirect) => {
+  return (dispatch) => {
+    document.cookie = 'email=';
+    document.cookie = 'name=';
+    document.cookie = 'id=';
+    dispatch(logoutRequest());
+    redirect.push('/login');
+  };
+};
