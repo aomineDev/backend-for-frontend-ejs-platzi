@@ -33,7 +33,7 @@ const Register = ({ registerUser, history }) => {
       <section className='Register'>
         <div className='Register__wrapper'>
           <h2 className='Register__title'>Register!</h2>
-          <form className='Register__form' onSubmit={handleSubmit}>
+          <form className='Register__form' onSubmit={handleSubmit} autoComplete='off'>
             <input
               type='text'
               name='name'

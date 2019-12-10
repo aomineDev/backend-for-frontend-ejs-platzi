@@ -7,6 +7,15 @@ const reducer = (state, action) => {
   let newUser;
 
   switch (action.type) {
+    case actions.setMovies:
+      const movies = action.payload;
+      if (!movies) return state;
+      return {
+        ...state,
+        content: movies,
+        trends: movies.filter((e) => e.contentRating === 'R'),
+        originals: movies.filter((e) => e.contentRating === 'G'),
+      };
     case actions.setFavorites:
       const item = state.myList.some((item) => item.id === action.payload.id);
       if (item) return state;
@@ -36,19 +45,9 @@ const reducer = (state, action) => {
     case actions.logoutRequest:
       return {
         ...state,
+        results: [],
+        myList: [],
         user: {},
-      };
-    case actions.registerRequest:
-      index = action.payload.email.indexOf('@');
-      username = action.payload.email.substr(0, index);
-      newUser = {
-        ...action.payload,
-        username,
-      };
-
-      return {
-        ...state,
-        user: newUser,
       };
     case actions.getVideoSource:
       return {

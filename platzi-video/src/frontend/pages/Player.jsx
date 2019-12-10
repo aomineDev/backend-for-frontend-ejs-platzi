@@ -7,10 +7,8 @@ import PlayerUI from '../Layout/PlayerUI';
 
 const Player = ({ history, match, playing, getVideoSource }) => {
   const { id } = match.params;
-  const intId = parseInt(id, 0);
-
   useEffect(() => {
-    getVideoSource(intId);
+    getVideoSource(id);
   }, []);
 
   const goBack = () => {

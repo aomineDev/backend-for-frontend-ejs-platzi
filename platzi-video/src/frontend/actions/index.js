@@ -1,15 +1,20 @@
 import axios from 'axios';
 
 export const actions = {
+  setMovies: 'SET_MOVIES',
   setFavorites: 'SET_FAVORITE',
   deleteFavorite: 'DELETE_FAVORITE',
   loginRequest: 'LOGIN_REQUEST',
   logoutRequest: 'LOGOUT_REQUEST',
   setError: 'SET_ERROR',
-  registerRequest: 'REGISTER_REQUEST',
   getVideoSource: 'GET_VIDEO_SOURCE',
   searchItem: 'SEARCH_ITEMS',
 };
+
+export const setMovies = (payload) => ({
+  type: actions.setMovies,
+  payload,
+});
 
 export const setFavorite = (payload) => ({
   type: actions.setFavorites,
@@ -35,11 +40,6 @@ export const setError = (payload) => ({
   payload,
 });
 
-export const registerRequest = (payload) => ({
-  type: actions.registerRequest,
-  payload,
-});
-
 export const getVideoSource = (payload) => ({
   type: actions.getVideoSource,
   payload,
@@ -49,15 +49,6 @@ export const searchItem = (payload) => ({
   type: actions.searchItem,
   payload,
 });
-
-export const registerUser = (payload, redirect) => {
-  return (dispatch) => {
-    axios.post('/auth/sign-up', payload)
-      .then(({ data }) => dispatch(registerRequest(data)))
-      .then(() => redirect.push('/login'))
-      .catch((err) => dispatch(setError(err)));
-  };
-};
 
 export const loginUser = ({ email, password }, redirect) => {
   return (dispatch) => {
@@ -75,7 +66,16 @@ export const loginUser = ({ email, password }, redirect) => {
         document.cookie = `id=${user.id}`;
         dispatch(loginRequest(user));
       })
-      .then(() => redirect.push('/'))
+      .catch((err) => dispatch(setError(err)));
+  };
+};
+
+export const registerUser = (payload, redirect) => {
+  return (dispatch) => {
+    axios.post('/auth/sign-up', payload)
+      .then(() => {
+        dispatch(loginUser(payload, redirect));
+      })
       .catch((err) => dispatch(setError(err)));
   };
 };
@@ -85,6 +85,7 @@ export const logoutUser = (redirect) => {
     document.cookie = 'email=';
     document.cookie = 'name=';
     document.cookie = 'id=';
+    document.cookie = 'token=';
     dispatch(logoutRequest());
     redirect.push('/login');
   };

@@ -15,8 +15,8 @@ dotenv.config();
 
 const ENV = process.env.NODE_ENV;
 const PORT = process.env.PORT || 3001;
-const THIRTY_DAYS_IN_SEC = 2592000;
-const TWO_HOURS_IN_SEC = 7200;
+const THIRTY_DAYS_IN_SEC = 2592000000;
+const TWO_HOURS_IN_SEC = 7200000;
 
 const app = express();
 
@@ -71,6 +71,7 @@ app.post('/auth/sign-in', async (req, res, next) => {
           httpOnly: !(ENV === 'development'),
           secure: !(ENV === 'development'),
           maxAge: rememberMe ? THIRTY_DAYS_IN_SEC : TWO_HOURS_IN_SEC,
+
         });
 
         res.status(200).json(user);
@@ -96,6 +97,25 @@ app.post('/auth/sign-up', async (req, res, next) => {
       email: user.email,
       id,
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/movies', async (req, res, next) => {
+  try {
+    const { token } = req.cookies;
+    const { data: { data }, status } = await axios({
+      url: `${process.env.API_URL}/api/movies`,
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (status !== 200) return next(boom.badImplementation());
+
+    res.status(status).json(data);
   } catch (error) {
     next(error);
   }

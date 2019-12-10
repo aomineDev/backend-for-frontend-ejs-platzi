@@ -15,17 +15,17 @@ const App = ({ user }) => (
   <BrowserRouter>
     <Layout>
       <Switch>
-        <Route exact path='/'>
-          {user.id ? <Home /> : <Redirect to='/login' />}
+        <Route exact path='/' component={Home}>
+          {user.id ? null : <Redirect to='/login' />}
         </Route>
-        <Route exact path='/login'>
-          {!user.id ? <Login /> : <Redirect to='/' />}
+        <Route exact path='/login' component={Login}>
+          {!user.id ? null : <Redirect to='/' />}
         </Route>
-        <Route exact path='/register'>
-          {!user.id ? <Register /> : <Redirect to='/' />}
+        <Route exact path='/register' component={Register}>
+          {!user.id ? null : <Redirect to='/' />}
         </Route>
-        <Route exact path='/player/:id'>
-          {user.id ? <Player /> : <Redirect to='/login' />}
+        <Route exact path='/player/:id' component={Player}>
+          {user.id ? null : <Redirect to='/login' />}
         </Route>
         <Route component={NotFound} />
       </Switch>
