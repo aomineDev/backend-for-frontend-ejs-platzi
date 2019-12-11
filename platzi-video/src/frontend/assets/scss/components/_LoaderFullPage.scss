@@ -1,0 +1,6 @@
+.Loader {
+  @extend %layout-center;
+  &-text {
+    font-size: 42px;
+  }
+}

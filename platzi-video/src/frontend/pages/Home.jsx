@@ -10,12 +10,21 @@ import Categories from '../Layout/Categories';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
 import CarouselBox from '../Layout/CarouselBox';
+import LoaderFullPage from '../components/LoaderFullPage';
 
 const Home = ({ setMovies, content, myList, trends, originals, results }) => {
 
   if (content.length === 0) {
     const response = useGetMovies();
-    if (response.length > 0) setMovies(response);
+    if (response.myMovies.length > 0 && response.movies.length > 0) setMovies(response);
+    return (
+      <>
+        <Helmet bodyAttributes={{ style: 'background-color :#834DFB' }}>
+          <title>Platzi Video | by aomine</title>
+        </Helmet>
+        <LoaderFullPage />
+      </>
+    );
   }
 
   return (

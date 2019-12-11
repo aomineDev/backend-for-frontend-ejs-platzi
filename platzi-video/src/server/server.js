@@ -1,4 +1,5 @@
 /* eslint-disable global-require */
+/* eslint-disable consistent-return */
 import express from 'express';
 import path from 'path';
 import favicon from 'serve-favicon';
@@ -103,10 +104,29 @@ app.post('/auth/sign-up', async (req, res, next) => {
 });
 
 app.get('/movies', async (req, res, next) => {
+  const { token } = req.cookies;
   try {
-    const { token } = req.cookies;
     const { data: { data }, status } = await axios({
       url: `${process.env.API_URL}/api/movies`,
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (status !== 200) return next(boom.badImplementation());
+
+    res.status(status).json(data);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/user-movies', async (req, res, next) => {
+  const { token, id } = req.cookies;
+  try {
+    const { data: { data }, status } = await axios({
+      url: `${process.env.API_URL}/api/user-movies?userId=${id}`,
       method: 'get',
       headers: {
         Authorization: `Bearer ${token}`,

@@ -20,6 +20,7 @@ const main = async (req, res, next) => {
       const { id, email, name, token } = req.cookies;
       let user = {};
       let movieList = [];
+      let myList = [];
       if (id && email && name) {
         const index = email.indexOf('@');
         const username = email.substr(0, index);
@@ -27,15 +28,26 @@ const main = async (req, res, next) => {
       };
 
       if (token) {
-        const { data: { data } } = await axios({
-          url: `${process.env.API_URL}/api/movies`,
-          method: 'get',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (data) movieList = data;
+        try {
+          const { data: { data: movies } } = await axios({
+            url: `${process.env.API_URL}/api/movies`,
+            method: 'get',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const { data: { data: userMovies } } = await axios({
+            url: `${process.env.API_URL}/api/user-movies?userId=${id}`,
+            method: 'get',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (movies) movieList = movies;
+          if (userMovies) myList = userMovies;
+        } catch (error) {
+          console.log(error);
+        }
       }
 
       initialState = {
@@ -43,9 +55,9 @@ const main = async (req, res, next) => {
         playing: null,
         content: movieList,
         results: [],
-        myList: [],
-        trends: movieList.filter((e) => e.contentRating === 'R'),
-        originals: movieList.filter((e) => e.contentRating === 'G'),
+        myList: myList.length === 0 ? myList : movieList.filter((e) => myList.some((item) => item.movieId === e._id)),
+        trends: movieList.length === 0 ? movieList : movieList.filter((e) => e.contentRating === 'R'),
+        originals: movieList.length === 0 ? movieList : movieList.filter((e) => e.contentRating === 'G'),
       };
     } catch (error) {
       console.log(error);

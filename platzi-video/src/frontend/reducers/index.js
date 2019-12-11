@@ -8,13 +8,15 @@ const reducer = (state, action) => {
 
   switch (action.type) {
     case actions.setMovies:
-      const movies = action.payload;
+      const { myMovies } = action.payload;
+      const { movies } = action.payload;
       if (!movies) return state;
       return {
         ...state,
         content: movies,
-        trends: movies.filter((e) => e.contentRating === 'R'),
-        originals: movies.filter((e) => e.contentRating === 'G'),
+        myList: myMovies.length === 0 ? myMovies : movies.filter((e) => myMovies.some((item) => item.movieId === e._id)),
+        trends: movies.length === 0 ? movies : movies.filter((e) => e.contentRating === 'R'),
+        originals: movies.length === 0 ? movies : movies.filter((e) => e.contentRating === 'G'),
       };
     case actions.setFavorites:
       const item = state.myList.some((item) => item.id === action.payload.id);
@@ -45,9 +47,10 @@ const reducer = (state, action) => {
     case actions.logoutRequest:
       return {
         ...state,
+        user: {},
+        content: [],
         results: [],
         myList: [],
-        user: {},
       };
     case actions.getVideoSource:
       return {
