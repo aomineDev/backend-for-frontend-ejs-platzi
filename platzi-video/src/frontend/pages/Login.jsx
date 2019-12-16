@@ -7,7 +7,7 @@ import { loginUser } from '../actions';
 import google from '../assets/img/google-icon.png';
 import twitter from '../assets/img/twitter-icon.png';
 
-const Login = ({ loginUser, history }) => {
+const Login = ({ loginUser }) => {
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -22,7 +22,7 @@ const Login = ({ loginUser, history }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    loginUser(form, history);
+    loginUser(form);
   };
 
   return (

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
@@ -13,51 +14,93 @@ import render from '../render';
 
 require('dotenv').config();
 
+const getMovies = async (token) => {
+  try {
+    const { data: { data: movies } } = await axios.get(
+      `${process.env.API_URL}/api/movies`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return movies;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getUserMovies = async (token, id) => {
+  try {
+    const { data: { data: userMovies } } = await axios({
+      url: `${process.env.API_URL}/api/user-movies?userId=${id}`,
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return userMovies;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const main = async (req, res, next) => {
   let initialState;
   try {
     try {
       const { id, email, name, token } = req.cookies;
       let user = {};
-      let movieList = [];
+      let content = [];
       let myList = [];
-      if (id && email && name) {
+      let trends = [];
+      let originals = [];
+
+      if (id && email && name && token) {
+        // Fetch User
         const index = email.indexOf('@');
         const username = email.substr(0, index);
         user = { id, email, name, username };
-      };
 
-      if (token) {
-        try {
-          const { data: { data: movies } } = await axios({
-            url: `${process.env.API_URL}/api/movies`,
-            method: 'get',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const { data: { data: userMovies } } = await axios({
-            url: `${process.env.API_URL}/api/user-movies?userId=${id}`,
-            method: 'get',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          if (movies) movieList = movies;
-          if (userMovies) myList = userMovies;
-        } catch (error) {
-          console.log(error);
+        // Fetch initialState
+        const response = await Promise.all([getMovies(token), getUserMovies(token, id)]);
+        const movies = response[0];
+        const userMovies = response[1];
+
+        if (movies.length) {
+          content = movies;
+          if (userMovies.length) {
+            myList = movies.filter(({ _id }) => userMovies.some(({ movieId }) => (movieId === _id)));
+            myList = myList.map((movie) => {
+              let userMovieId = null;
+              userMovies.forEach(({ movieId, _id }) => {
+                if (movie._id === movieId) userMovieId = _id;
+              });
+
+              return { ...movie, userMovieId };
+            });
+            content = movies.map((movie) => {
+              let inMyList = false;
+              userMovies.forEach(({ movieId }) => {
+                if (movie._id === movieId) inMyList = true;
+              });
+
+              return { ...movie, inMyList };
+            });
+          }
+          trends = content.filter((e) => e.contentRating === 'R');
+          originals = content.filter((e) => e.contentRating === 'G');
         }
-      }
+      };
 
       initialState = {
         user,
         playing: null,
-        content: movieList,
+        content,
         results: [],
-        myList: myList.length === 0 ? myList : movieList.filter((e) => myList.some((item) => item.movieId === e._id)),
-        trends: movieList.length === 0 ? movieList : movieList.filter((e) => e.contentRating === 'R'),
-        originals: movieList.length === 0 ? movieList : movieList.filter((e) => e.contentRating === 'G'),
+        myList,
+        trends,
+        originals,
       };
     } catch (error) {
       console.log(error);

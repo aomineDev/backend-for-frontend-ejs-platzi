@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import { registerUser } from '../actions';
 
-const Register = ({ registerUser, history }) => {
+const Register = ({ registerUser }) => {
   const [form, setForm] = useState({
     email: '',
     name: '',
@@ -21,7 +21,7 @@ const Register = ({ registerUser, history }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    registerUser(form, history);
+    registerUser(form);
   };
 
   return (

@@ -3,19 +3,23 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { setFavorite, deleteFavorite } from '../actions';
+import { addFavorite, removeFavorite } from '../actions';
 
 import play from '../assets/img/play-icon.png';
 import plus from '../assets/img/plus-icon.png';
 import remove from '../assets/img/remove-icon.webp';
 
-const CarouselItem = ({ id, cover, title, year, contentRating, duration, setFavorite, deleteFavorite, isMyList }) => {
+const CarouselItem = ({ _id, id, cover, title, year, contentRating, duration, userMovieId, inMyList, addFavorite, removeFavorite, isMyList }) => {
   function handleSetFavorite() {
-    setFavorite({ id, cover, title, year, contentRating, duration, setFavorite });
+    if (inMyList) {
+      alert('this movie is already set in favorites.');
+      return;
+    }
+    addFavorite({ _id, id, cover, title, year, contentRating, duration });
   }
 
   function handleDeleteFavorite() {
-    deleteFavorite(id);
+    removeFavorite(userMovieId);
   }
 
   return (
@@ -30,23 +34,21 @@ const CarouselItem = ({ id, cover, title, year, contentRating, duration, setFavo
               alt='Play Icon'
             />
           </Link>
-          {!isMyList ?
-            (
-              <img
-                className='Carousel__details-action'
-                src={plus}
-                alt='Plus Icon'
-                onClick={handleSetFavorite}
-              />
-            ) :
-            (
-              <img
-                className='Carousel__details-action'
-                src={remove}
-                alt='Remove Icon'
-                onClick={handleDeleteFavorite}
-              />
-            )}
+          {!isMyList ? (
+            <img
+              className='Carousel__details-action'
+              src={plus}
+              alt='Plus Icon'
+              onClick={handleSetFavorite}
+            />
+          ) : (
+            <img
+              className='Carousel__details-action'
+              src={remove}
+              alt='Remove Icon'
+              onClick={handleDeleteFavorite}
+            />
+          )}
         </div>
         <p className='Carousel__details-title'>{ title }</p>
         <p className='Carousel__details-subtitle'>{ `${year} ${contentRating} ${duration}` }</p>
@@ -64,8 +66,8 @@ CarouselItem.propTypes = {
 };
 
 const mapDispatchToProps = {
-  setFavorite,
-  deleteFavorite,
+  addFavorite,
+  removeFavorite,
 };
 
 export default connect(null, mapDispatchToProps)(CarouselItem);

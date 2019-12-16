@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const useGetMovies = () => {
   const [movies, setMovies] = useState([]);
-  const [myMovies, setMyMovies] = useState([]);
+  const [userMovies, setUserMovies] = useState([]);
 
   const fetchMovies = async () => {
     try {
@@ -15,7 +15,7 @@ const useGetMovies = () => {
     }
   };
 
-  const fetchMyMovies = async () => {
+  const fetchUserMovies = async () => {
     try {
       const { data } = await axios.get('/user-movies');
       return data;
@@ -25,9 +25,9 @@ const useGetMovies = () => {
   };
 
   const fetchData = async () => {
-    const response = await Promise.all([fetchMovies(), fetchMyMovies()]);
+    const response = await Promise.all([fetchMovies(), fetchUserMovies()]);
+    setUserMovies(response[1]);
     setMovies(response[0]);
-    setMyMovies(response[1]);
   };
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const useGetMovies = () => {
 
   return {
     movies,
-    myMovies,
+    userMovies,
   };
 };
 

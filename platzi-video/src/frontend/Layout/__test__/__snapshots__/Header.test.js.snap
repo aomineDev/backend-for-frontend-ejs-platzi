@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component Match snapshot 1`] = `
+<header
+  className="Header"
+>
+  <div
+    className="Header__wrapper"
+  >
+    <div
+      className="Branch"
+    >
+      <img
+        alt="Platzi Video"
+        className="Branch__logo"
+        src="test-file-stubs"
+      />
+    </div>
+    <div
+      className="User"
+    >
+      <div
+        className="User__profile"
+      >
+        <img
+          alt="User"
+          className="User__profile-icon"
+          src="test-file-stubs"
+        />
+        <p>
+          Perfil
+        </p>
+      </div>
+      <ul
+        className="User__actions"
+      >
+        <li
+          className="User__actions-item"
+        >
+          <a
+            className="User__actions-link"
+            href="/login"
+            onClick={[Function]}
+          >
+            Iniciar Sesión
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+`;

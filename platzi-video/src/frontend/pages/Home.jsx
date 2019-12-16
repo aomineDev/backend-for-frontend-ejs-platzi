@@ -16,7 +16,10 @@ const Home = ({ setMovies, content, myList, trends, originals, results }) => {
 
   if (content.length === 0) {
     const response = useGetMovies();
-    if (response.myMovies.length > 0 && response.movies.length > 0) setMovies(response);
+    if (response.movies.length) {
+      setMovies(response);
+    };
+
     return (
       <>
         <Helmet bodyAttributes={{ style: 'background-color :#834DFB' }}>

@@ -5,32 +5,86 @@ const reducer = (state, action) => {
   let index;
   let username;
   let newUser;
+  let content;
+  let myList;
+  let trends;
+  let originals;
 
   switch (action.type) {
     case actions.setMovies:
-      const { myMovies } = action.payload;
-      const { movies } = action.payload;
-      if (!movies) return state;
+      const { userMovies, movies } = action.payload;
+
+      if (!movies.length) return state;
+      content = movies;
+      myList = [];
+      if (userMovies.length) {
+        myList = movies.filter(({ _id }) => userMovies.some(({ movieId }) => (movieId === _id)));
+        myList = myList.map((movie) => {
+          let userMovieId = null;
+          userMovies.forEach(({ movieId, _id }) => {
+            if (movie._id === movieId) userMovieId = _id;
+          });
+
+          return { ...movie, userMovieId };
+        });
+        content = movies.map((movie) => {
+          let inMyList = false;
+          userMovies.forEach(({ movieId }) => {
+            if (movie._id === movieId) inMyList = true;
+          });
+
+          return { ...movie, inMyList };
+        });
+      }
+      trends = content.filter((e) => e.contentRating === 'R');
+      originals = content.filter((e) => e.contentRating === 'G');
       return {
         ...state,
-        content: movies,
-        myList: myMovies.length === 0 ? myMovies : movies.filter((e) => myMovies.some((item) => item.movieId === e._id)),
-        trends: movies.length === 0 ? movies : movies.filter((e) => e.contentRating === 'R'),
-        originals: movies.length === 0 ? movies : movies.filter((e) => e.contentRating === 'G'),
+        content,
+        myList,
+        trends,
+        originals,
       };
     case actions.setFavorites:
-      const item = state.myList.some((item) => item.id === action.payload.id);
+      const item = state.myList.some(({ _id }) => _id === action.payload._id);
       if (item) return state;
+      content = state.content;
+      index = content.findIndex(({ _id }) => _id === action.payload._id);
+      content[index].inMyList = true;
+      trends = content.filter((e) => e.contentRating === 'R');
+      originals = content.filter((e) => e.contentRating === 'G');
 
       return {
         ...state,
-        myList: [...state.myList, action.payload],
+        content,
+        myList: [
+          ...state.myList,
+          action.payload,
+        ],
+        trends,
+        originals,
       };
     case actions.deleteFavorite:
-      const newMyList = state.myList.filter((item) => item.id !== action.payload);
+      let movieId;
+      const newMyList = state.myList.filter((item) => {
+        if (item.userMovieId === action.payload) {
+          movieId = item._id;
+          return false;
+        }
+        return true;
+      });
+      content = state.content;
+      index = content.findIndex(({ _id }) => _id === movieId);
+      content[index].inMyList = false;
+      trends = content.filter((e) => e.contentRating === 'R');
+      originals = content.filter((e) => e.contentRating === 'G');
+
       return {
         ...state,
+        content,
         myList: newMyList,
+        trends,
+        originals,
       };
     case actions.loginRequest:
       index = action.payload.email.indexOf('@');
@@ -63,6 +117,9 @@ const reducer = (state, action) => {
         ...state,
         results,
       };
+    case actions.setError:
+      console.log(payload);
+      return state;
     default:
       return state;
   }

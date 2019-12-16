@@ -16,7 +16,7 @@ dotenv.config();
 
 const ENV = process.env.NODE_ENV;
 const PORT = process.env.PORT || 3001;
-const THIRTY_DAYS_IN_SEC = 2592000000;
+const THIRTY_DAYS_IN_SEC = 2505600000;
 const TWO_HOURS_IN_SEC = 7200000;
 
 const app = express();
@@ -72,7 +72,6 @@ app.post('/auth/sign-in', async (req, res, next) => {
           httpOnly: !(ENV === 'development'),
           secure: !(ENV === 'development'),
           maxAge: rememberMe ? THIRTY_DAYS_IN_SEC : TWO_HOURS_IN_SEC,
-
         });
 
         res.status(200).json(user);
@@ -87,11 +86,7 @@ app.post('/auth/sign-up', async (req, res, next) => {
   const { body: user } = req;
 
   try {
-    const { data: { data: id } } = await axios({
-      url: `${process.env.API_URL}/api/auth/sign-up`,
-      method: 'post',
-      data: user,
-    });
+    const { data: { data: id } } = await axios.post(`${process.env.API_URL}/api/auth/sign-up`, user);
 
     res.status(201).json({
       name: user.name,
@@ -106,9 +101,7 @@ app.post('/auth/sign-up', async (req, res, next) => {
 app.get('/movies', async (req, res, next) => {
   const { token } = req.cookies;
   try {
-    const { data: { data }, status } = await axios({
-      url: `${process.env.API_URL}/api/movies`,
-      method: 'get',
+    const { data: { data }, status } = await axios.get(`${process.env.API_URL}/api/movies`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -125,9 +118,7 @@ app.get('/movies', async (req, res, next) => {
 app.get('/user-movies', async (req, res, next) => {
   const { token, id } = req.cookies;
   try {
-    const { data: { data }, status } = await axios({
-      url: `${process.env.API_URL}/api/user-movies?userId=${id}`,
-      method: 'get',
+    const { data: { data }, status } = await axios.get(`${process.env.API_URL}/api/user-movies?userId=${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -135,6 +126,41 @@ app.get('/user-movies', async (req, res, next) => {
 
     if (status !== 200) return next(boom.badImplementation());
 
+    res.status(status).json(data);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/user-movies', async (req, res, next) => {
+  const { movieId } = req.body;
+  const { token, id } = req.cookies;
+  try {
+    const { data: { data }, status } = await axios.post(`${process.env.API_URL}/api/user-movies`, { userId: id, movieId }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (status !== 201) return next(boom.badImplementation());
+
+    res.status(status).json(data);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.delete('/user-movies/:userMovieId', async (req, res, next) => {
+  const { userMovieId } = req.params;
+  const { token } = req.cookies;
+  try {
+    const { data, status } = await axios.delete(`${process.env.API_URL}/api/user-movies/${userMovieId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (status !== 200) return next(boom.badImplementation());
     res.status(status).json(data);
   } catch (error) {
     next(error);

@@ -50,7 +50,7 @@ export const searchItem = (payload) => ({
   payload,
 });
 
-export const loginUser = ({ email, password }, redirect) => {
+export const loginUser = ({ email, password }) => {
   return (dispatch) => {
     axios({
       url: '/auth/sign-in',
@@ -70,16 +70,6 @@ export const loginUser = ({ email, password }, redirect) => {
   };
 };
 
-export const registerUser = (payload, redirect) => {
-  return (dispatch) => {
-    axios.post('/auth/sign-up', payload)
-      .then(() => {
-        dispatch(loginUser(payload, redirect));
-      })
-      .catch((err) => dispatch(setError(err)));
-  };
-};
-
 export const logoutUser = (redirect) => {
   return (dispatch) => {
     document.cookie = 'email=';
@@ -88,5 +78,36 @@ export const logoutUser = (redirect) => {
     document.cookie = 'token=';
     dispatch(logoutRequest());
     redirect.push('/login');
+  };
+};
+
+export const registerUser = (payload) => {
+  return (dispatch) => {
+    axios.post('/auth/sign-up', payload)
+      .then(() => dispatch(loginUser(payload)))
+      .catch((err) => dispatch(setError(err)));
+  };
+};
+
+export const addFavorite = (payload) => {
+  return async (dispatch) => {
+    try {
+      const { data: userMovieId } = await axios.post('/user-movies', { movieId: payload._id });
+      const data = {
+        ...payload,
+        userMovieId,
+      };
+      dispatch(setFavorite(data));
+    } catch (error) {
+      dispatch(setError(error));
+    }
+  };
+};
+
+export const removeFavorite = (payload) => {
+  return (dispatch) => {
+    dispatch(deleteFavorite(payload));
+    axios.delete(`/user-movies/${payload}`)
+      .catch((err) => dispatch(setError(err)));
   };
 };
