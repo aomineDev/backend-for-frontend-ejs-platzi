@@ -7,7 +7,6 @@
     "start": "nodemon src/server/index.js --exact babel-node",
     "serve": "set NODE_ENV=production&& node src/server/index.js",
     "build": "set NODE_ENV=production&& webpack",
-    "now-build": "npm run build",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
@@ -22,7 +21,11 @@
   "author": "aomine- Code",
   "license": "MIT",
   "dependencies": {
+    "@babel/core": "^7.7.5",
     "@babel/polyfill": "^7.7.0",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/preset-react": "^7.7.4",
+    "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.7.4",
     "@hapi/boom": "^8.0.1",
     "asset-require-hook": "^1.2.0",
@@ -32,6 +35,7 @@
     "express": "^4.17.1",
     "helmet": "^3.21.2",
     "history": "^4.10.1",
+    "ignore-styles": "^5.0.1",
     "md5": "^2.2.1",
     "passport": "^0.4.0",
     "passport-http": "^0.3.0",
@@ -48,11 +52,7 @@
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
     "@babel/plugin-transform-runtime": "^7.7.4",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.7.0",
     "autoprefixer": "^9.7.1",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
@@ -72,7 +72,6 @@
     "file-loader": "^4.2.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
-    "ignore-styles": "^5.0.1",
     "jest": "^24.9.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",

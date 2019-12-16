@@ -50,7 +50,7 @@ if (ENV === 'development') {
   app.use(helmet());
   app.use(helmet.permittedCrossDomainPolicies());
   app.disable('x-powered-by');
-  app.use(favicon(path.resolve(__dirname, 'public/favicon.ico')));
+  app.use(favicon(path.resolve(__dirname, 'favicon.ico')));
 }
 
 // Basic strategy
