@@ -70,14 +70,13 @@ export const loginUser = ({ email, password }) => {
   };
 };
 
-export const logoutUser = (redirect) => {
+export const logoutUser = () => {
   return (dispatch) => {
     document.cookie = 'email=';
     document.cookie = 'name=';
     document.cookie = 'id=';
     document.cookie = 'token=';
     dispatch(logoutRequest());
-    redirect.push('/login');
   };
 };
 

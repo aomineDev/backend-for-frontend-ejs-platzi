@@ -8,12 +8,12 @@ import { logoutUser } from '../actions';
 import logo from '../assets/img/logo-platzi-video-BW2.png';
 import userIcon from '../assets/img/user-icon.png';
 
-const Header = ({ user, history, logoutUser }) => {
+const Header = ({ user, logoutUser }) => {
 
   const userValidate = Object.keys(user).length > 0;
 
   const handleSignout = () => {
-    logoutUser(history);
+    logoutUser();
   };
 
   return (
