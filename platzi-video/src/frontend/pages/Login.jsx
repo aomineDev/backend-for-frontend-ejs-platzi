@@ -63,7 +63,8 @@ const Login = ({ loginUser }) => {
                 </label>
               </div>
               <div className='Login__forgot'>
-                <a href='/' className='Login__forgot-link'>I forgot my password</a>
+                {/* <a href='/' className='Login__forgot-link'>I forgot my password</a> */}
+                <p className='Login__forgot-link'>I forgot my password</p>
               </div>
             </div>
           </form>
@@ -71,11 +72,13 @@ const Login = ({ loginUser }) => {
           <div className='Login__socialLogin'>
             <div className='Login__socialLogin-wrapper'>
               <img src={google} alt='google' className='Login__socialLogin-icon' />
-              <a href='/' className='Login__socialLogin-link'>Log In with Google</a>
+              {/* <a href='/' className='Login__socialLogin-link'>Log In with Google</a> */}
+              <p className='Login__socialLogin-link'>Log In with Google</p>
             </div>
             <div className='Login__socialLogin-wrapper'>
               <img src={twitter} alt='google' className='Login__socialLogin-icon' />
-              <a href='/' className='Login__socialLogin-link'>Log In with Twitter</a>
+              {/* <a href='/' className='Login__socialLogin-link'>Log In with Twitter</a> */}
+              <p className='Login__socialLogin-link'>Log In with Twitter</p>
             </div>
           </div>
 
