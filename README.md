@@ -1,4 +1,4 @@
-# Backend for Frontend - EJS Platzi
+# Interacion de Backend y Frontend - EJS Platzi
 
 ![BFF](./md/bff.jpg)
 
